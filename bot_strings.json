@@ -1,0 +1,7 @@
+{
+  "welcomeTextRegistered": "Привет, {}, это тестовый бот для хакатона БСЦ",
+  "welcomeTextUnregistered": "Привет, это тестовый бот для хакатона БСЦ, я тебя не знаю, давай знакомиться? Назови свою фамилию",
+  "registrationName": "Как тебя зовут?",
+  "registrationMiddleName": "Ага, и отчество?",
+  "registrationCompleted": "Спасибо, {} {} {}, регистрация завершена!"
+}
