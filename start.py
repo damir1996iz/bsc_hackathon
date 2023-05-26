@@ -12,7 +12,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
     ]
 
-    markup = ReplyKeyboardMarkup(keyboard)
+    markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
     user_name = await get_context(context, update, "user_name")
     await context.bot.send_message(
