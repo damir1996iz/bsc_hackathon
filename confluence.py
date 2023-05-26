@@ -61,9 +61,9 @@ def get_username_by_tg(tg: str):
     rows = table.find_all("tr")[3:]
     for r in rows:
         columns = r.find_all("td")
-        name = columns[1].find("h4").text
+        name = columns[1].find("h4").text.strip()
         user_tg = columns[3].find("div", {"class": "content-wrapper"}).find_all("p")[1].text
-        data[name] = user_tg
+        data[name] = user_tg.strip()
 
     for key, value in data.items():
         if value == tg:
