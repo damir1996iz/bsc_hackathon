@@ -2,7 +2,7 @@ from telegram.ext import ContextTypes
 from telegram import Update
 
 
-VACATION_TASK="https://cz-support.finshape.com/jira/browse/P20009352-969"
+VACATION_TASK = "https://cz-support.finshape.com/jira/browse/P20009352-969"
 
 
 async def show_jira_task(update: Update, context: ContextTypes.DEFAULT_TYPE):
