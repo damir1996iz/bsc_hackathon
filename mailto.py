@@ -8,7 +8,7 @@ REDIRECT_SERVER = "http://185.46.11.250/mailto/"
 
 def mailto(
         update: Update, context: ContextTypes.DEFAULT_TYPE,
-            message: str, button: str, agreed_command: str,
+        message: str, button: str, agreed_command: str,
         emails: str, subject: str, body: str):
     url = REDIRECT_SERVER + "?emails={emails}&subject={subject}&body={body}".format(
                 emails=emails,
