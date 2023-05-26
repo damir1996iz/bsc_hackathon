@@ -1,12 +1,13 @@
 from atlassian import Confluence
 from bs4 import BeautifulSoup
+from auth import CONFL_USER, CONFL_PASS
 
 
 def get_username_by_tg(tg: str):
     confluence = Confluence(
         url='https://cz-support.finshape.com/confl',
-        username='dgilmutdinov',
-        password='Damta96A'
+        username=CONFL_USER,
+        password=CONFL_PASS
     )
 
     page = confluence.get_page_by_id("169810267", "space,body.view,version,container")
