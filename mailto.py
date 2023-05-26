@@ -36,7 +36,7 @@ def normal_vacation_mailto(
     return mailto(
         update, context, message, button, agreed_command, emails,
         subject="Очередной отпуск с {fromDate} по {toDate}".format(fromDate=from_date, toDate=to_date),
-        body="Прошу согласовать очередной отпуск с {fromDate} по {toDate}".format(fromDate=from_date, toDate=to_date),
+        body="Прошу согласовать очередной отпуск с {fromDate} по {toDate}\n".format(fromDate=from_date, toDate=to_date),
     )
 
 
@@ -49,8 +49,8 @@ async def normal_vacation_with_project(update: Update, context: ContextTypes.DEF
             update, context, message, button,
             "project_vacation_agreed",
             vacation.project_approvers,
-            vacation.start_date,
-            vacation.end_date)
+            vacation.start_date.strftime("%d.%m.%Y"),
+            vacation.end_date.strftime("%d.%m.%Y"))
 
 
 async def normal_vacation_with_bsc(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -62,5 +62,5 @@ async def normal_vacation_with_bsc(update: Update, context: ContextTypes.DEFAULT
             update, context, message, button,
             "bsc_vacation_agreed",
             vacation.bsc_approvers,
-            vacation.start_date,
-            vacation.end_date)
+            vacation.start_date.strftime("%d.%m.%Y"),
+            vacation.end_date.strftime("%d.%m.%Y"))
