@@ -25,7 +25,8 @@ async def vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_
 async def next_vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка /next_vacation"""
 
-    vacation_list = get_user_vacations(get_username_by_tg(update.effective_chat.username))
+    user_name = context.chat_data["user_name"]
+    vacation_list = get_user_vacations(user_name)
 
     if len(vacation_list) == 0:
         await context.bot.send_message(
@@ -34,6 +35,7 @@ async def next_vacation_button_handler(update: Update, context: ContextTypes.DEF
         )
 
     near_vacation = sorted(vacation_list, key=lambda item: item.start_date)[0]
+    context.chat_data["next_vacation"] = near_vacation
 
     message = "Ближайший отпуск запланирован с {} по {}".format(
         near_vacation.start_date.strftime("%d-%m-%Y"),
@@ -41,7 +43,7 @@ async def next_vacation_button_handler(update: Update, context: ContextTypes.DEF
     )
 
     keyboard = [[
-        InlineKeyboardButton(text="Продолжить оформление", callback_data="project_vacation_agreed"),
+        InlineKeyboardButton(text="Продолжить оформление", callback_data="start_vacation_process"),
         InlineKeyboardButton(text="Другие даты", callback_data="/mock")
     ]]
 

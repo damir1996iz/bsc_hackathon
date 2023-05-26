@@ -40,9 +40,9 @@ def normal_vacation_mailto(
 
 
 async def normal_vacation_with_project(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    vacations = get_user_vacations(get_username_by_tg(update.effective_chat.username))
-    if len(vacations) > 0:
-        vacation = vacations[0]
+    user_name = context.chat_data["user_name"]
+    vacation = context.chat_data["next_vacation"]
+    if vacation is not None:
         message = "Давайте согласуем ближайший очередной отпуск"
         button = "Согласовать с проектом"
         await normal_vacation_mailto(
@@ -54,9 +54,8 @@ async def normal_vacation_with_project(update: Update, context: ContextTypes.DEF
 
 
 async def normal_vacation_with_bsc(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    vacations = get_user_vacations(get_username_by_tg(update.effective_chat.username))
-    if len(vacations) > 0:
-        vacation = vacations[0]
+    vacation = context.chat_data["next_vacation"]
+    if vacation is not None:
         message = "При согласовании отпуска внутри компании не забудьте вложить письмо с согласование на проекте."
         button = "Согласовать в БСЦ"
         await normal_vacation_mailto(

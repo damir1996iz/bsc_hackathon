@@ -82,9 +82,8 @@ def reformat_fio(fio: str):
 
 
 async def show_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    vacations = get_user_vacations(get_username_by_tg(update.effective_chat.username))
-    if len(vacations) > 0:
-        vacation = vacations[0]
+    vacation = context.chat_data["next_vacation"]
+    if vacation is not None:
         format_file(
             vacation.job,
             vacation.fio,
