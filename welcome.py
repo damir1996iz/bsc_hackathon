@@ -26,7 +26,14 @@ async def next_vacation_button_handler(update: Update, context: ContextTypes.DEF
     """Обработка /next_vacation"""
 
     user_name = context.chat_data["user_name"]
-    vacation_list = get_user_vacations(user_name)
+    try:
+        vacation_list = get_user_vacations(user_name)
+    except:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="Ошибка в форматировании таблицы"
+        )
+        return
 
     if len(vacation_list) == 0:
         await context.bot.send_message(
