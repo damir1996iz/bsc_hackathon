@@ -1,11 +1,10 @@
-from python_docx_replace import docx_replace
 from docx import Document
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
-from confluence import get_user_vacations, get_username_by_tg
-from pytrovich.enums import NamePart, Gender, Case
-from pytrovich.maker import PetrovichDeclinationMaker
+from python_docx_replace import docx_replace
 from pytrovich.detector import PetrovichGenderDetector
+from pytrovich.enums import NamePart, Case
+from pytrovich.maker import PetrovichDeclinationMaker
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ContextTypes
 
 HR_LINK_URL = "https://bsc.hr-link.ru/employee/applications"
 
@@ -53,13 +52,13 @@ def format_file(
         fio=reformat_fio(fio),
         num_days=num_days,
         start_day=start_day,
-        start_month=start_month,
+        start_month=format_month(start_month),
         start_year=start_year,
         end_day=end_day,
-        end_month=end_month,
+        end_month=format_month(end_month),
         end_year=end_year
     )
-    doc.save("otpusk_out.docx")
+    doc.save("vacation.docx")
 
 
 def reformat_fio(fio: str):
@@ -98,7 +97,7 @@ async def show_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await context.bot.send_document(
             chat_id=update.effective_chat.id,
-            document=open("otpusk_out.docx", "rb"),
+            document=open("vacation.docx", "rb"),
         )
 
         keyboard = [[
@@ -110,3 +109,24 @@ async def show_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text="Проверьте заявление и загрузите его в HR-Link, после чего подпишите его.",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
+
+
+def format_month(month: str):
+    months = [
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    ]
+
+    index = int(month)-1
+
+    return str(months[index])
