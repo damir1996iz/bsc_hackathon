@@ -27,6 +27,12 @@ async def next_vacation_button_handler(update: Update, context: ContextTypes.DEF
 
     vacation_list = get_user_vacations(get_username_by_tg(update.effective_chat.username))
 
+    if len(vacation_list) == 0:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="Я тебя не нашел в графике отпусков. Обратись в отдел кадров."
+        )
+
     near_vacation = sorted(vacation_list, key=lambda item: item.start_date)[0]
 
     message = "Ближайший отпуск запланирован с {} по {}".format(
