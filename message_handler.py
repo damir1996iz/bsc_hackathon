@@ -8,11 +8,9 @@ from vacation_end import show_jira_task
 
 
 async def callback_query_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """хэндер нажатий на кнопки"""
+    """хэндлер нажатий на кнопки"""
     command = update.callback_query.data
 
-    if command == "/vacation":
-        await vacation_button_handler(update, context)
     if command == "/next_vacation":
         await next_vacation_button_handler(update, context)
     if command == "start_vacation_process":
@@ -25,6 +23,13 @@ async def callback_query_handler(update: Update, context: ContextTypes.DEFAULT_T
         await show_jira_task(update, context)
     elif command == "/mock":
         await mock_handler(update, context)
+
+
+async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+
+    if "отпуск".lower() in text.lower():
+        await vacation_button_handler(update, context)
 
 
 async def mock_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
