@@ -17,6 +17,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.chat_data["user_name"] = user_name
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="Здравствуйте, " + user_name,
+        text="Здравствуй! Я тебя узнал. Ты – " + user_name,
         reply_markup=markup
     )
