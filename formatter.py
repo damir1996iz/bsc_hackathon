@@ -3,6 +3,9 @@ from docx import Document
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
 from confluence import get_user_vacations, get_username_by_tg
+from pytrovich.enums import NamePart, Gender, Case
+from pytrovich.maker import PetrovichDeclinationMaker
+from pytrovich.detector import PetrovichGenderDetector
 
 HR_LINK_URL = "https://bsc.hr-link.ru/employee/applications"
 
@@ -47,7 +50,7 @@ def format_file(
     docx_replace(
         doc,
         job=job,
-        fio=fio,
+        fio=reformat_fio(fio),
         num_days=num_days,
         start_day=start_day,
         start_month=start_month,
@@ -57,6 +60,25 @@ def format_file(
         end_year=end_year
     )
     doc.save("otpusk_out.docx")
+
+
+def reformat_fio(fio: str):
+    try:
+        detector = PetrovichGenderDetector()
+        maker = PetrovichDeclinationMaker()
+
+        splitted = fio.split(sep=" ")
+        gender = detector.detect(firstname=splitted[1], lastname=splitted[0], middlename=splitted[2])
+        first = maker.make(name_part=NamePart.FIRSTNAME, gender=gender, case_to_use=Case.GENITIVE,
+                           original_name=splitted[1])
+        last = maker.make(name_part=NamePart.LASTNAME, gender=gender, case_to_use=Case.GENITIVE,
+                          original_name=splitted[0])
+        middle = maker.make(name_part=NamePart.MIDDLENAME, gender=gender, case_to_use=Case.GENITIVE,
+                            original_name=splitted[2])
+
+        return "{} {} {}".format(last, first, middle)
+    except:
+        return fio
 
 
 async def show_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
