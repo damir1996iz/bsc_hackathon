@@ -5,6 +5,7 @@ from pytrovich.enums import NamePart, Case
 from pytrovich.maker import PetrovichDeclinationMaker
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
+from context import get_context
 
 HR_LINK_URL = "https://bsc.hr-link.ru/employee/applications"
 
@@ -81,7 +82,7 @@ def reformat_fio(fio: str):
 
 
 async def show_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    vacation = context.chat_data["next_vacation"]
+    vacation = await get_context(context, update, "next_vacation")
     if vacation is not None:
         format_file(
             vacation.job,

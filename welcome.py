@@ -1,7 +1,7 @@
-from telegram.ext import ContextTypes
-from telegram import Update
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from confluence import get_username_by_tg, get_user_vacations
+from telegram import Update
+from telegram.ext import ContextTypes
+from context import get_context
 
 async def vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка /vacation"""
@@ -31,25 +31,7 @@ async def vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_
 
 async def next_vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка /next_vacation"""
-
-    user_name = context.chat_data["user_name"]
-    try:
-        vacation_list = get_user_vacations(user_name)
-    except:
-        await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text="Ошибка в форматировании таблицы"
-        )
-        return
-
-    if len(vacation_list) == 0:
-        await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text="Я тебя не нашел в графике отпусков. Обратись в отдел кадров."
-        )
-
-    near_vacation = sorted(vacation_list, key=lambda item: item.start_date)[0]
-    context.chat_data["next_vacation"] = near_vacation
+    near_vacation = await get_context(context, update, "next_vacation")
 
     message = "У тебя запланирован отпуск с {} по {}. Оформляем?".format(
         near_vacation.start_date.strftime("%d-%m-%Y"),

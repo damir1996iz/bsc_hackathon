@@ -1,7 +1,8 @@
-from telegram import Update
 from telegram.ext import ContextTypes
 from confluence import get_username_by_tg
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, ReplyKeyboardMarkup, KeyboardButton
+from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
+from context import get_context
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик команды /start"""
@@ -13,8 +14,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     markup = ReplyKeyboardMarkup(keyboard)
 
-    user_name = get_username_by_tg(update.effective_chat.username)
-    context.chat_data["user_name"] = user_name
+    user_name = await get_context(context, update, "user_name")
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text="Здравствуй! Я тебя узнал. Ты – " + user_name,

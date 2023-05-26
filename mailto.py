@@ -2,6 +2,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
 from urllib.parse import quote
 from confluence import get_user_vacations, get_username_by_tg
+from context import get_context
 
 REDIRECT_SERVER = "http://185.46.11.250/mailto/"
 
@@ -40,8 +41,7 @@ def normal_vacation_mailto(
 
 
 async def normal_vacation_with_project(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_name = context.chat_data["user_name"]
-    vacation = context.chat_data["next_vacation"]
+    vacation = await get_context(context, update, "next_vacation")
     if vacation is not None:
         message = "Давайте согласуем ближайший очередной отпуск"
         button = "Согласовать с проектом"
@@ -54,7 +54,7 @@ async def normal_vacation_with_project(update: Update, context: ContextTypes.DEF
 
 
 async def normal_vacation_with_bsc(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    vacation = context.chat_data["next_vacation"]
+    vacation = await get_context(context, update, "next_vacation")
     if vacation is not None:
         message = "При согласовании отпуска внутри компании не забудьте вложить письмо с согласование на проекте."
         button = "Согласовать в БСЦ"
