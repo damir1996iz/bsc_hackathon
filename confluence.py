@@ -38,8 +38,8 @@ def get_user_vacations(user_name: str):
                     num_days=columns[2].text,
                     start_date=string_to_datetime(columns[3].text),
                     end_date=string_to_datetime(columns[4].text),
-                    bsc_approvers=columns[5].text.split(","),
-                    project_approvers=columns[6].text.split(",")
+                    bsc_approvers=columns[5].text,
+                    project_approvers=columns[6].text
                 )
             )
     return result
