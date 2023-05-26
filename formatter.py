@@ -1,5 +1,10 @@
 from python_docx_replace import docx_replace
 from docx import Document
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
+from confluence import get_user_vacations, get_username_by_tg
+
+HR_LINK_URL = "https://bsc.hr-link.ru/employee/applications"
 
 
 def format_file(
@@ -52,3 +57,35 @@ def format_file(
         end_year=end_year
     )
     doc.save("otpusk_out.docx")
+
+
+async def show_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    vacations = get_user_vacations(get_username_by_tg(update.effective_chat.username))
+    if len(vacations) > 0:
+        vacation = vacations[0]
+        format_file(
+            vacation.job,
+            vacation.fio,
+            vacation.num_days,
+            vacation.start_date.day,
+            vacation.start_date.month,
+            vacation.start_date.year,
+            vacation.end_date.day,
+            vacation.end_date.month,
+            vacation.end_date.year,
+        )
+
+        await context.bot.send_document(
+            chat_id=update.effective_chat.id,
+            document=open("otpusk_out.docx", "rb"),
+        )
+
+        keyboard = [[
+            InlineKeyboardButton("Перейти в HR-Link", url=HR_LINK_URL),
+            InlineKeyboardButton("Уже подписано и согласовано", callback_data="signed")
+        ]]
+        await context.bot.sendMessage(
+            chat_id=update.effective_chat.id,
+            text="Проверьте заявление и загрузите его в HR-Link, после чего подпишите его.",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
