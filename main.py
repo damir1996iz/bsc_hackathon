@@ -1,9 +1,11 @@
 import logging
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler
+
+import telegram.ext.filters
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, MessageHandler
 
 from auth import TOKEN
 from start import start
-from message_handler import callback_query_handler
+from message_handler import callback_query_handler, message_handler
 from mailto import normal_vacation_with_project
 
 logging.basicConfig(
@@ -18,5 +20,6 @@ normal_vacation_with_project_handler = CommandHandler('vacation_with_project', n
 application.add_handler(start_handler)
 application.add_handler(normal_vacation_with_project_handler)
 application.add_handler(CallbackQueryHandler(callback_query_handler))
+application.add_handler(MessageHandler(telegram.ext.filters.TEXT, message_handler))
 
 application.run_polling()

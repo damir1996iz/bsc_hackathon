@@ -1,18 +1,17 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 from confluence import get_username_by_tg
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, ReplyKeyboardMarkup, KeyboardButton
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик команды /start"""
     keyboard = [
         [
-            InlineKeyboardButton(text="Отпуск", callback_data="/vacation")
+            KeyboardButton(text="Отпуск")
         ]
     ]
 
-    markup = InlineKeyboardMarkup(keyboard)
+    markup = ReplyKeyboardMarkup(keyboard)
 
     user_name = get_username_by_tg(update.effective_chat.username)
     context.chat_data["user_name"] = user_name
