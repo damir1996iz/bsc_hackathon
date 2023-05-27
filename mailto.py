@@ -36,7 +36,7 @@ def normal_vacation_mailto(
     return mailto(
         update, context, message, button, agreed_command, emails,
         subject="Очередной отпуск с {fromDate} по {toDate}".format(fromDate=from_date, toDate=to_date),
-        body="Прошу согласовать очередной отпуск с {fromDate} по {toDate}\n".format(fromDate=from_date, toDate=to_date),
+        body="Прошу согласовать очередной отпуск с {fromDate} по {toDate}\n\n".format(fromDate=from_date, toDate=to_date),
     )
 
 
