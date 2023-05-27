@@ -59,6 +59,8 @@ async def process_calendar_result(
     vacation = await get_context(context, update, "next_vacation")
     vacation.start_date = context.chat_data["calendar1_result"]
     vacation.end_date = calendar2_result
+    number_of_days = (vacation.end_date - vacation.start_date).days
+    vacation.num_days = number_of_days + 1
     context.chat_data["next_vacation"] = vacation
     await normal_vacation_with_project(update, context)
 
