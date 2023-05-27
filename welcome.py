@@ -39,8 +39,8 @@ async def next_vacation_button_handler(update: Update, context: ContextTypes.DEF
     )
 
     keyboard = [[
-        InlineKeyboardButton(text="Продолжить оформление", callback_data="start_vacation_process"),
-        InlineKeyboardButton(text="Другие даты", callback_data="select_start_date")
+        InlineKeyboardButton(text="Да, оформляем", callback_data="start_vacation_process"),
+        InlineKeyboardButton(text="Нет, другие даты", callback_data="select_start_date")
     ]]
 
     markup = InlineKeyboardMarkup(keyboard)
