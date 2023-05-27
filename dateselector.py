@@ -40,9 +40,9 @@ async def calendar_edit(update: Update, context: ContextTypes.DEFAULT_TYPE, cale
 
 def get_prompt(calendar_id: int):
     if calendar_id == 1:
-        return "Выберите дату начала отпуска"
+        return "Выбери дату начала"
     elif calendar_id == 2:
-        return "Выберите дату окончания отпуска"
+        return "Выбери дату окончания"
     else:
         return None
 
