@@ -107,8 +107,8 @@ async def show_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]]
         await context.bot.sendMessage(
             chat_id=update.effective_chat.id,
-            text="Скачай, проверь и отправь в HRLink заявление на отпуск. Подпиши  его.<br><br> Обязательно! Укажи "
-                 "согласующим Левина В.В",
+            text="Скачай, проверь и отправь в HRLink заявление на отпуск. Подпиши  его.\n\n/Обязательно! Укажи "
+                 "согласующим Лёвина В.В.",
             reply_markup=InlineKeyboardMarkup(keyboard),
             parse_mode="html"
         )
