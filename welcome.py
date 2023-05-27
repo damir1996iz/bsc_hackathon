@@ -31,7 +31,7 @@ async def vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_
 
 async def next_vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка /next_vacation"""
-    near_vacation = await get_context(context, update, "next_vacation")
+    near_vacation = await get_context(context, update, "next_vacation", True)
 
     message = "У тебя запланирован отпуск с {} по {}. Оформляем?".format(
         near_vacation.start_date.strftime("%d-%m-%Y"),
