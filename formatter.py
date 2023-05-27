@@ -101,10 +101,10 @@ async def show_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             document=open("vacation.docx", "rb"),
         )
 
-        keyboard = [[
-            InlineKeyboardButton("Перейти в HR-Link", url=HR_LINK_URL),
-            InlineKeyboardButton("Уже подписано и согласовано", callback_data="signed")
-        ]]
+        keyboard = [
+            [InlineKeyboardButton("Перейти в HR-Link", url=HR_LINK_URL)],
+            [InlineKeyboardButton("Уже подписано и согласовано", callback_data="signed")]
+        ]
         await context.bot.sendMessage(
             chat_id=update.effective_chat.id,
             text="Скачай, проверь и отправь в HRLink заявление на отпуск. Подпиши  его.\n\nОбязательно! Укажи "
