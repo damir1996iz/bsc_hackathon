@@ -12,12 +12,8 @@ async def get_context(context: ContextTypes.DEFAULT_TYPE, update: Update, key: s
         if key == "next_vacation":
             try:
                 vacation_list = get_user_vacations(await get_context(context, update, "user_name"))
-            except:
-                await context.bot.send_message(
-                    chat_id=update.effective_chat.id,
-                    text="Ошибка в форматировании таблицы"
-                )
-                return
+            except ValueError as error:
+                raise error
 
             if len(vacation_list) == 0:
                 await context.bot.send_message(

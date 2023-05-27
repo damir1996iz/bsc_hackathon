@@ -32,6 +32,9 @@ def get_user_vacations(user_name: str):
         columns = row.find_all("td", {"class": "confluenceTd"})
         if columns[0].text == user_name:
 
+            if (columns[3].text == "") or (columns[4].text == ""):
+                raise ValueError("Dates error")
+
             for c in columns:
                 if c.text == "":
                     raise ValueError("Incorrect table")

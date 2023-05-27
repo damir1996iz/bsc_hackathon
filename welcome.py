@@ -2,6 +2,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram import Update
 from telegram.ext import ContextTypes
 from context import get_context
+from dateselector import select_start_date
 
 async def vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка /vacation"""
@@ -31,22 +32,31 @@ async def vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_
 
 async def next_vacation_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка /next_vacation"""
-    near_vacation = await get_context(context, update, "next_vacation", True)
+    try:
+        near_vacation = await get_context(context, update, "next_vacation", True)
 
-    message = "У тебя запланирован отпуск с {} по {}. Оформляем?".format(
-        near_vacation.start_date.strftime("%d-%m-%Y"),
-        near_vacation.end_date.strftime("%d-%m-%Y")
-    )
+        message = "У тебя запланирован отпуск с {} по {}. Оформляем?".format(
+            near_vacation.start_date.strftime("%d-%m-%Y"),
+            near_vacation.end_date.strftime("%d-%m-%Y")
+        )
 
-    keyboard = [[
-        InlineKeyboardButton(text="Да, оформляем", callback_data="start_vacation_process"),
-        InlineKeyboardButton(text="Нет, другие даты", callback_data="select_start_date")
-    ]]
+        keyboard = [[
+            InlineKeyboardButton(text="Да, оформляем", callback_data="start_vacation_process"),
+            InlineKeyboardButton(text="Нет, другие даты", callback_data="select_start_date")
+        ]]
 
-    markup = InlineKeyboardMarkup(keyboard)
+        markup = InlineKeyboardMarkup(keyboard)
 
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=message,
-        reply_markup=markup
-    )
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=message,
+            reply_markup=markup
+        )
+    except ValueError as e:
+        if str(e) == "Dates error":
+            await select_start_date(update, context)
+        else:
+            await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text="Ошибка в форматировании таблицы"
+            )
