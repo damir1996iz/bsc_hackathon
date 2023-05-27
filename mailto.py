@@ -43,7 +43,7 @@ def normal_vacation_mailto(
 async def normal_vacation_with_project(update: Update, context: ContextTypes.DEFAULT_TYPE):
     vacation = await get_context(context, update, "next_vacation")
     if vacation is not None:
-        message = "Давайте согласуем ближайший очередной отпуск"
+        message = "Давай согласуем очередной отпуск"
         button = "Согласовать с проектом"
         await normal_vacation_mailto(
             update, context, message, button,
