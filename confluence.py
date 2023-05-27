@@ -32,12 +32,8 @@ def get_user_vacations(user_name: str):
         columns = row.find_all("td", {"class": "confluenceTd"})
         if columns[0].text == user_name:
 
-            if (columns[3].text == "") or (columns[4].text == ""):
-                raise ValueError("Dates error")
-
-            for c in columns:
-                if c.text == "":
-                    raise ValueError("Incorrect table")
+            if (not columns[1].text) or (not columns[2].text) or (not columns[5].text) or (not columns[6].text):
+                raise ValueError("Incorrect table")
 
             result.append(
                 Vacation(
@@ -79,4 +75,7 @@ def get_username_by_tg(tg: str):
 
 
 def string_to_datetime(string: str):
-    return datetime.strptime(string, "%d-%m-%Y")
+    try:
+        return datetime.strptime(string, "%d-%m-%Y")
+    except:
+        return ""

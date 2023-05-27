@@ -35,6 +35,10 @@ async def next_vacation_button_handler(update: Update, context: ContextTypes.DEF
     try:
         near_vacation = await get_context(context, update, "next_vacation", True)
 
+        if (near_vacation.start_date == "") or (near_vacation.end_date == ""):
+            await select_start_date(update, context)
+            return
+
         message = "У тебя запланирован отпуск с {} по {}. Оформляем?".format(
             near_vacation.start_date.strftime("%d-%m-%Y"),
             near_vacation.end_date.strftime("%d-%m-%Y")
@@ -53,10 +57,7 @@ async def next_vacation_button_handler(update: Update, context: ContextTypes.DEF
             reply_markup=markup
         )
     except ValueError as e:
-        if str(e) == "Dates error":
-            await select_start_date(update, context)
-        else:
-            await context.bot.send_message(
-                chat_id=update.effective_chat.id,
-                text="Ошибка в форматировании таблицы"
-            )
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="Ошибка в форматировании таблицы"
+        )
