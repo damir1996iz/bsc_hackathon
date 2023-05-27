@@ -61,6 +61,6 @@ async def normal_vacation_with_bsc(update: Update, context: ContextTypes.DEFAULT
         await normal_vacation_mailto(
             update, context, message, button,
             "bsc_vacation_agreed",
-            vacation.bsc_approvers,
+            vacation.bsc_approvers + ";ru.staff.vacation@bscmsc.ru",
             vacation.start_date.strftime("%d.%m.%Y"),
             vacation.end_date.strftime("%d.%m.%Y"))
