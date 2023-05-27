@@ -3,8 +3,8 @@ from confluence import get_username_by_tg, get_user_vacations
 from telegram import Update
 
 
-async def get_context(context: ContextTypes.DEFAULT_TYPE, update: Update, key: str):
-    if key not in context.chat_data.keys():
+async def get_context(context: ContextTypes.DEFAULT_TYPE, update: Update, key: str, force_update=False):
+    if (key not in context.chat_data.keys()) or (force_update is True):
         if key == "user_name":
             user_name = get_username_by_tg(update.effective_chat.username)
             context.chat_data["user_name"] = user_name
