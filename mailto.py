@@ -12,14 +12,14 @@ def mailto(
         message: str, button: str, agreed_command: str,
         emails: str, subject: str, body: str):
     url = REDIRECT_SERVER + "?emails={emails}&subject={subject}&body={body}".format(
-                emails=emails,
-                subject=quote(subject, "utf-8"),
-                body=quote(body, "utf-8"),
-            )
-    keyboard = [[
-        InlineKeyboardButton(button, url=url),
-        InlineKeyboardButton("Уже согласовано", callback_data=agreed_command)
-    ]]
+        emails=emails,
+        subject=quote(subject, "utf-8"),
+        body=quote(body, "utf-8"),
+    )
+    keyboard = [
+        [InlineKeyboardButton(button, url=url)],
+        [InlineKeyboardButton("Уже согласовано", callback_data=agreed_command)],
+    ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
     return context.bot.send_message(
@@ -44,7 +44,7 @@ async def normal_vacation_with_project(update: Update, context: ContextTypes.DEF
     vacation = await get_context(context, update, "next_vacation")
     if vacation is not None:
         message = "Давай согласуем очередной отпуск"
-        button = "Согласовать с проектом"
+        button = "Согласовать с командой проекта"
         await normal_vacation_mailto(
             update, context, message, button,
             "project_vacation_agreed",
@@ -56,7 +56,7 @@ async def normal_vacation_with_project(update: Update, context: ContextTypes.DEF
 async def normal_vacation_with_bsc(update: Update, context: ContextTypes.DEFAULT_TYPE):
     vacation = await get_context(context, update, "next_vacation")
     if vacation is not None:
-        message = "При согласовании отпуска внутри компании не забудьте вложить письмо с согласование на проекте."
+        message = "Согласуй свой отпуск в БСЦ.\n\nОбязательно! Приложи к письму файл с согласованием в команде проекта."
         button = "Согласовать в БСЦ"
         await normal_vacation_mailto(
             update, context, message, button,
